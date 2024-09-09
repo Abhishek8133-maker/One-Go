@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture Invitation</title>
+</head>
+<body>
+    <h1>Lecture Invitation</h1>
+
+    <!-- Form to generate and preview invitation -->
+    <form action="/" method="post">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date">
+        <br>
+        <label for="time">Time:</label>
+        <input type="time" id="time" name="time">
+        <br>
+        <label for="topic">Topic:</label>
+        <input type="text" id="topic" name="topic">
+        <br>
+        <label for="link">Classroom Link:</label>
+        <input type="text" id="link" name="link">
+        <br>
+        <label for="message">Custom Message:</label>
+        <textarea id="message" name="message"></textarea>
+        <br>
+        <button type="submit" name="generate">Generate Invitation</button>
+    </form>
+
+    <!-- Form to upload Excel file -->
+    <form action="/" method="post" enctype="multipart/form-data">
+        <label for="file">Upload Excel File:</label>
+        <input type="file" id="file" name="file" accept=".xlsx">
+        <br>
+        <button type="submit" name="upload">Upload and Process File</button>
+    </form>
+
+    {% if uploaded %}
+        <h2>Names from the Excel File:</h2>
+        <ul>
+            {% for name in names %}
+                <li>{{ name['Name'] }}</li>
+            {% endfor %}
+        </ul>
+        <form action="/send_email" method="post">
+            <input type="hidden" name="invitation" value="{{ invitation }}">
+            <button type="submit">Send Emails</button>
+        </form>
+    {% endif %}
+
+    {% if invitation %}
+        <h2>Generated Invitation:</h2>
+        <pre>{{ invitation }}</pre>
+    {% endif %}
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+</body>
+</html>
